@@ -1,0 +1,11 @@
+{
+    "name": "hoge/calculator",
+    "description": "demo",
+    "authors": [
+        {
+            "name": "yosichikaw",
+            "email": "yosichikaw@pasonacareer.biz"
+        }
+    ],
+    "require": {}
+}
