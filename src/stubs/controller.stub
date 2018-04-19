@@ -1,10 +1,11 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DummyModel;
 
-class DummyClass extends Controller
+class DummyController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
@@ -14,7 +15,7 @@ class DummyClass extends Controller
 	public function index()
 	{
 		$DummyValiables = DummyModel::all();
-		return view('DummyValiable/index', compact('DummyValiables'));
+		return view('DummyViewDir/index', compact('DummyValiables'));
 	}
 
 	/**
@@ -24,7 +25,7 @@ class DummyClass extends Controller
 	 */
 	public function create()
 	{
-		return view('DummyValiable/create');
+		return view('DummyViewDir/create');
 	}
 
 	/**
@@ -35,6 +36,10 @@ class DummyClass extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$request->validate([
+			DummyValidator
+		]);
+
 		DummyModel::create($request->only([
 			'DummyColumns'
 		]));
@@ -50,7 +55,7 @@ class DummyClass extends Controller
 	public function show($id)
 	{
 		$DummyValiable = DummyModel::findOrFail($id);
-		return view('DummyValiable/show', compact('DummyValiable'));
+		return view('DummyViewDir/show', compact('DummyValiable'));
 	}
 
 	/**
@@ -62,7 +67,7 @@ class DummyClass extends Controller
 	public function edit($id)
 	{
 		$DummyValiable = DummyModel::findOrFail($id);
-		return view('DummyValiable/edit', compact('DummyValiable'));
+		return view('DummyViewDir/edit', compact('DummyValiable'));
 	}
 
 	/**
@@ -74,10 +79,14 @@ class DummyClass extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+		$request->validate([
+			DummyValidator
+		]);
+
 		$DummyValiable = DummyModel::findOrFail($id);
 		$DummyValiable->fill($request->only([
 			'DummyColumns'
-		])->save();
+		]))->save();
 
 		redirect()->route('DummyValiable.index');
 	}

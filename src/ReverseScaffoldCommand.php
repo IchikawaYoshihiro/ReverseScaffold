@@ -11,14 +11,14 @@ class ReverseScaffoldCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'scaffold:reverse {name}';
+    protected $signature = 'make:reverse {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'reverse scaffolding from database';
+    protected $description = 'Reverse scaffolding from database';
 
     /**
      * Create a new command instance.
@@ -39,8 +39,18 @@ class ReverseScaffoldCommand extends Command
     {
         $table_name = $this->argument('name');
 
-        $gen = new ReverseScaffoldGenerator($table_name);
+        $gen = new Generator($table_name);
 
-        $gen->generate();
+        // echo "generate model...\n";
+        // $gen->generateModel();
+
+        // echo "generate controller...\n";
+        // $gen->generateController();
+
+        // echo "add route...\n";
+        // $gen->addRoute();
+
+        echo "generate view files...\n";
+        $gen->generateViews();
     }
 }

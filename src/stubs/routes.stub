@@ -1,0 +1,3 @@
+
+// add by reverse scaffold generator.
+Route::resource('DummyUrl', 'DummyController');
