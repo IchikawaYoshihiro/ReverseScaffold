@@ -41,11 +41,11 @@ class ReverseScaffoldCommand extends Command
 
         $gen = new Generator($table_name);
 
-        // echo "generate model...\n";
-        // $gen->generateModel();
+        echo "generate model...\n";
+        $gen->generateModel();
 
-        // echo "generate controller...\n";
-        // $gen->generateController();
+        echo "generate controller...\n";
+        $gen->generateController();
 
         // echo "add route...\n";
         // $gen->addRoute();

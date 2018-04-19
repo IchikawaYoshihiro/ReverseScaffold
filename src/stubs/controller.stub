@@ -43,7 +43,7 @@ class DummyController extends Controller
 		DummyModel::create($request->only([
 			'DummyColumns'
 		]));
-		redirect()->route('DummyValiable.index');
+		return redirect()->route('DummyValiable.index');
 	}
 
 	/**
@@ -88,7 +88,7 @@ class DummyController extends Controller
 			'DummyColumns'
 		]))->save();
 
-		redirect()->route('DummyValiable.index');
+		return redirect()->route('DummyValiable.index');
 	}
 
 	/**
@@ -102,6 +102,8 @@ class DummyController extends Controller
 		$DummyValiable = DummyModel::findOrFail($id);
 		$DummyValiable->delete();
 
-		redirect()->route('DummyValiable.index');
+		session()->flash('status', 'Task was successful!');
+
+		return redirect()->route('DummyValiable.index');
 	}
 }

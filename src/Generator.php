@@ -9,11 +9,13 @@ use \Artisan;
 class Generator
 {
     /**
+     * eg. foo_bars
      * @var string
      */
     protected $table_name;
 
     /**
+     * eg. FooBar
      * @var string
      */
     protected $model_name;
@@ -56,7 +58,7 @@ class Generator
     {
         $replaces = [
             'DummyModel'   => $this->model_name,
-            'DummyColumns' => $this->fillableColumns()->pluck('Field')->implode("',\n\t\t'"),
+            'DummyColumns' => $this->fillableFields()->pluck('Field')->implode("',\n\t\t'"),
         ];
 
         $stub     = __DIR__.'/stubs/model.stub';
@@ -86,7 +88,7 @@ class Generator
         $filename = $this->getControllerName().'.php';
         $path     = app_path('Http/Controllers/'.$filename);
 
-        $this->fileGenerate($stub, $replaces, $path);
+        static::fileGenerate($stub, $replaces, $path);
     }
 
 
@@ -103,7 +105,7 @@ class Generator
         $stub = __DIR__.'/stubs/routes.stub';
         $path = base_path('routes/web.php');
 
-        $this->fileAppend($stub, $replaces, $path);
+        static::fileAppend($stub, $replaces, $path);
     }
 
     /**
@@ -111,11 +113,91 @@ class Generator
      */
     public function generateViews()
     {
+        // make views/{modelname} dir
+        $dirname = str_plural($this->valiable_name);
+        $path = resource_path("views/{$dirname}");
+        static::mkdir($path);
+
+        // make views/layouts dir
+        $path = resource_path("views/layouts");
+        static::mkdir($path);
+
+
+        $replaces = [
+            'DummyValiables' => str_plural($this->valiable_name),
+            'DummyValiable'  => $this->valiable_name,
+            'DummyModel'     => $this->model_name,
+            'DummyTableHead' => $this->generateTableHead(),
+            'DummyTableBody' => $this->generateTableBody(),
+            'DummyList'      => $this->generateList(),
+        ];
         
+        // layouts
+        $stub = __DIR__.'/stubs/views/layouts/app.blade.stub';
+        $path = resource_path("views/layouts/app.blade.php");
+        static::fileGenerate($stub, $replaces, $path);
+        
+        // index
+        $stub = __DIR__.'/stubs/views/index.blade.stub';
+        $path = resource_path("views/{$dirname}/index.blade.php");
+        static::fileGenerate($stub, $replaces, $path);
+
+        $stub = __DIR__.'/stubs/views/create.blade.stub';
+        $path = resource_path("views/{$dirname}/create.blade.php");
+        static::fileGenerate($stub, $replaces, $path);
+
+        $stub = __DIR__.'/stubs/views/edit.blade.stub';
+        $path = resource_path("views/{$dirname}/edit.blade.php");
+        static::fileGenerate($stub, $replaces, $path);
+
+        $stub = __DIR__.'/stubs/views/_form.blade.stub';
+        $path = resource_path("views/{$dirname}/_form.blade.php");
+        static::fileGenerate($stub, $replaces, $path);
+
+        $stub = __DIR__.'/stubs/views/show.blade.stub';
+        $path = resource_path("views/{$dirname}/show.blade.php");
+        static::fileGenerate($stub, $replaces, $path);
+    }
+
+    public function addLang()
+    {
+        $langs;
+    }
+    
+
+    protected function generateTableHead()
+    {
+        return $this->fillableFields()->map(function($column) {
+            return "<th>{{ __('message.{$this->valiable_name}.{$column->Field}') }}</th>";
+        })->implode("\n\t\t\t");
     }
 
 
-    protected function fileGenerate($stub, $replaces, $path)
+    protected function generateTableBody()
+    {
+        return $this->fillableFields()->map(function($column) {
+            return "<td>{{ \${$this->valiable_name}->{$column->Field} }}</td>";
+        })->implode("\n\t\t\t");
+    }
+
+
+    protected function generateList()
+    {
+        return $this->fillableFields()->map(function($column) {
+            return "<dt>{{ __('message.{$this->valiable_name}.{$column->Field}') }}</dt><dd>{{ \${$this->valiable_name}->{$column->Field} }}</dd>";
+        })->implode("\n\t\t");
+    }
+
+
+    protected static function mkdir($path)
+    {
+        if (!file_exists($path)) {
+            mkdir($path, true);
+        }
+    }
+
+
+    protected static function fileGenerate($stub, $replaces, $path)
     {
         $file = file_get_contents($stub);
         $file = str_replace(array_keys($replaces), array_values($replaces), $file);
@@ -123,7 +205,7 @@ class Generator
     }
 
     
-    protected function fileAppend($stub, $replaces, $path)
+    protected static function fileAppend($stub, $replaces, $path)
     {
         $file = file_get_contents($stub);
         $file = str_replace(array_keys($replaces), array_values($replaces), $file);
@@ -237,6 +319,6 @@ class Generator
      */
     protected static function getBlackListColumns()
     {
-        return ['id', 'created_at', 'updated_at'];
+        return ['id', 'password', 'created_at', 'updated_at'];
     }
 }
