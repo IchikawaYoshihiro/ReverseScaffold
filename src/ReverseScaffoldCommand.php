@@ -47,7 +47,7 @@ class ReverseScaffoldCommand extends Command
         echo "generate controller...\n";
         $gen->generateController();
 
-        // echo "add route...\n";
+        echo "add route...\n";
         // $gen->addRoute();
 
         echo "generate view files...\n";

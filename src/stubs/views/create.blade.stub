@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-
-
+<div class="container">
+	<h2>{{ __('message.DummyValiable.create') }}</h2>
+  <form action="{{ route('DummyValiables.store') }}" method="POST">
+    @include('DummyValiables._form')
+    <button type="submit" class="btn btn-primary">{{ __('message.store') }}</button>
+  </form>
+</div>
 @endsection

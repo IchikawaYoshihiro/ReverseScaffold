@@ -99,7 +99,7 @@ class Generator
     {
         $replaces = [
             'DummyController'=> $this->getControllerName(),
-            'DummyUrl'       => str_singular($this->valiable_name),
+            'DummyValiables' => str_plural($this->valiable_name),
         ];
 
         $stub = __DIR__.'/stubs/routes.stub';
@@ -130,6 +130,7 @@ class Generator
             'DummyTableHead' => $this->generateTableHead(),
             'DummyTableBody' => $this->generateTableBody(),
             'DummyList'      => $this->generateList(),
+            'DummyInputArea' => $this->generateInputArea(),
         ];
         
         // layouts
@@ -184,8 +185,66 @@ class Generator
     protected function generateList()
     {
         return $this->fillableFields()->map(function($column) {
-            return "<dt>{{ __('message.{$this->valiable_name}.{$column->Field}') }}</dt><dd>{{ \${$this->valiable_name}->{$column->Field} }}</dd>";
+            return "<dt>{{ __('message.{$this->valiable_name}.{$column->Field}') }}</dt>"
+                ."<dd>{{ \${$this->valiable_name}->{$column->Field} }}</dd>";
         })->implode("\n\t\t");
+    }
+
+    protected function generateInputArea()
+    {
+        return $this->fillableFields()->map(function($item) {
+            $input = $this->buildInput($item);
+            $requiured = $item->Null === 'NO' ? "<span class=\"badge badge-danger\">{{ __('message.required') }}</span>" : '';
+            return <<< EOM
+<div class="form-group">
+    <label for="{$item->Field}">{$requiured} {{ __('message.{$this->valiable_name}.{$item->Field}') }}</label>
+    {$input}
+    @if (\$errors->has('{$item->Field}'))
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (\$errors->get('{$item->Field}') as \$error)
+                    <li>{{ \$error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
+EOM;
+        })->implode("\n\n");
+        /*
+
+*/
+    }
+    protected function buildInput($item)
+    {
+        if (static::has($item->Type, 'text')) {
+            return <<< EOM
+<textarea name="{$item->Field}" id="{$item->Field}" class="form-control">{{ old('{$item->Field}', $user->ddd ?? '') }}</textarea>
+EOM;
+        } else {
+            $type = static::judgeType($item);
+            return <<< EOM
+<input type="{$type}" name="{$item->Field}" id="{$item->Field}" class="form-control" value="{{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? '') }}">
+EOM;
+        }
+    }
+    protected static function judgeType($item)
+    {
+        // special
+        if (static::has($item->Field, 'email')) {
+            return 'email';
+        }
+        if (static::has($item->Field, 'password')) {
+            return 'password';
+        }
+
+        // types
+        if (static::has($item->Type, 'int')) {
+            return 'number';
+        }
+        if (static::has($item->Type, 'char') || static::has($item->Type, 'text')) {
+            return 'text';
+        }
     }
 
 
@@ -319,6 +378,6 @@ class Generator
      */
     protected static function getBlackListColumns()
     {
-        return ['id', 'password', 'created_at', 'updated_at'];
+        return ['id', 'created_at', 'updated_at'];
     }
 }
