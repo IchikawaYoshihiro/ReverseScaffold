@@ -1,6 +1,6 @@
 <?php
 
-namespace yosichikaw\ReverseScaffold;
+namespace IchikawaYoshihiro\ReverseScaffold;
 
 use Illuminate\Support\ServiceProvider;
 

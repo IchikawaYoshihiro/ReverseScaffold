@@ -1,11 +1,11 @@
 {
-    "name": "yosichikaw/ReverseScaffold",
-    "description": "demo",
+    "name": "IchikawaYoshihiro/ReverseScaffold",
+    "description": "Laravel CRUD Reverse Scaffold Generator",
     "authors": [
         {
-            "name": "yosichikaw",
+            "name": "Ichikawa Yoshihiro",
             "email": "yosichikaw@pasonacareer.biz"
         }
     ],
-    "require": {},
+    "require": {}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace yosichikaw\ReverseScaffold\Traits;
+namespace IchikawaYoshihiro\ReverseScaffold\Traits;
 
 trait ControllerGenerator {
 
