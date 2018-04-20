@@ -1,10 +1,10 @@
 <?php
 
-namespace IchikawaYoshihiro\ReverseScaffold;
+namespace IchikawaYoshihiro\ReverseScaffoldGenerator;
 
 use Illuminate\Support\ServiceProvider;
 
-class ReverseScaffoldServiceProvider extends ServiceProvider
+class CommandServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
@@ -18,15 +18,5 @@ class ReverseScaffoldServiceProvider extends ServiceProvider
                 ReverseScaffoldCommand::class,
             ]);
         }
-    }
-
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

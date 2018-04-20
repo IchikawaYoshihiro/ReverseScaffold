@@ -1,5 +1,5 @@
 <?php
-namespace IchikawaYoshihiro\ReverseScaffold\Traits;
+namespace IchikawaYoshihiro\ReverseScaffoldGenerator\Traits;
 
 trait ViewGenerator {
 
