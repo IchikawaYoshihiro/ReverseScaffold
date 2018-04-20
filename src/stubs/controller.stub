@@ -15,7 +15,7 @@ class DummyController extends Controller
 	public function index()
 	{
 		$DummyValiables = DummyModel::all();
-		return view('DummyViewDir/index', compact('DummyValiables'));
+		return view('DummyValiables/index', compact('DummyValiables'));
 	}
 
 	/**
@@ -25,7 +25,7 @@ class DummyController extends Controller
 	 */
 	public function create()
 	{
-		return view('DummyViewDir/create');
+		return view('DummyValiables/create');
 	}
 
 	/**
@@ -55,7 +55,7 @@ class DummyController extends Controller
 	public function show($id)
 	{
 		$DummyValiable = DummyModel::findOrFail($id);
-		return view('DummyViewDir/show', compact('DummyValiable'));
+		return view('DummyValiables/show', compact('DummyValiable'));
 	}
 
 	/**
@@ -67,7 +67,7 @@ class DummyController extends Controller
 	public function edit($id)
 	{
 		$DummyValiable = DummyModel::findOrFail($id);
-		return view('DummyViewDir/edit', compact('DummyValiable'));
+		return view('DummyValiables/edit', compact('DummyValiable'));
 	}
 
 	/**
