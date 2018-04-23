@@ -10,5 +10,20 @@
     "require": {
         "php": "^7.0",
         "laravel/framework": "5.6.*"
+    },
+    "autoload-dev": {
+        "files": [
+            "IchikawaYoshihiro/ReverseScaffoldGenerator/src"
+        ],
+        "psr-4": {
+            "IchikawaYoshihiro\\ReverseScaffoldGenerator\\": "IchikawaYoshihiro/ReverseScaffoldGenerator/src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "IchikawaYoshihiro\\ReverseScaffoldGenerator\\CommandServiceProvider"
+            ]
+        }
     }
 }
