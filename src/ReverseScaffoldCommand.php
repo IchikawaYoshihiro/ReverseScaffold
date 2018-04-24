@@ -52,5 +52,8 @@ class ReverseScaffoldCommand extends Command
 
         echo "generate view files...\n";
         $gen->generateViews();
+
+        echo "generate lang file...\n";
+        $gen->generateLang();
     }
 }

@@ -8,7 +8,7 @@
 		DummyList
 	</dl>
 
-	<a href="{{ route('DummyValiables.edit', $DummyValiable->id) }}" class="btn btn-primary">{{ __('message.edit') }}</a>
+	<a href="{{ route('DummyValiables.edit', $DummyValiable->id) }}" class="btn btn-primary">{{ __('message.crud.edit') }}</a>
 
 </div>
 

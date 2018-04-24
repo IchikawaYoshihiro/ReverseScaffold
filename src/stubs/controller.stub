@@ -43,6 +43,9 @@ class DummyController extends Controller
 		DummyModel::create($request->only([
 			'DummyColumns'
 		]));
+
+		session()->flash('success', __('message.crud.created'));
+
 		return redirect()->route('DummyValiables.index');
 	}
 
@@ -87,6 +90,8 @@ class DummyController extends Controller
 		$DummyValiable->fill($request->only([
 			'DummyColumns'
 		]))->save();
+		session()->flash('success', __('message.crud.updated'));
+
 
 		return redirect()->route('DummyValiables.index');
 	}
@@ -102,7 +107,7 @@ class DummyController extends Controller
 		$DummyValiable = DummyModel::findOrFail($id);
 		$DummyValiable->delete();
 
-		session()->flash('status', 'Task was successful!');
+		session()->flash('success', __('message.crud.deleted'));
 
 		return redirect()->route('DummyValiables.index');
 	}

@@ -6,7 +6,7 @@
   <form action="{{ route('DummyValiables.update', $DummyValiable->id) }}" method="POST">
     {{ method_field('PUT') }}
     @include('DummyValiables._form')
-    <button type="submit" class="btn btn-primary">{{ __('message.update') }}</button>
+    <button type="submit" class="btn btn-primary">{{ __('message.crud.save') }}</button>
   </form>
 </div>
 @endsection

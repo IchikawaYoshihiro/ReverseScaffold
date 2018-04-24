@@ -56,7 +56,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script>
         $(function(){
-            $('.btn-confirm').on('click', e => window.confirm('{{ __('message.confirm') }}'))
+            $('.btn-confirm').on('click', e => window.confirm('{{ __('message.crud.confirm') }}'))
         })
     </script>
 </body>

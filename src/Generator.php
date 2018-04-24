@@ -46,9 +46,31 @@ class Generator
 
 
 
-    public function addLang()
+    public function generateLang()
     {
-        $langs;
+        $name = title_case($this->valiable_name);
+        $names = title_case($this->valiables_name);
+        $langs = [
+            'crud' => [
+                'save'    => 'Save',
+                'create'  => 'Create',
+                'show'    => 'Show',
+                'edit'    => 'Edit',
+                'delete'  => 'Delete',
+                'confirm' => 'Are you sure?',
+                'created' => 'Created',
+                'updated' => 'Updated',
+                'deleted' => 'Deleted',
+            ],
+            $this->valiable_name => [
+                'id'     => 'ID',
+                'action' => 'Action',
+                'create' => "Create new {$name}",
+                'show'   => "Show {$name}",
+                'edit'   => "Edit {$name}",
+                'list'   => "List of {$name}",
+            ]
+        ];
     }
 
 

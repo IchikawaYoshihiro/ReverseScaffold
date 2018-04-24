@@ -5,7 +5,7 @@
 <div class="container">
 	<h2>{{ __('message.DummyValiable.list') }}</h2>
 
-	<a href="{{ route('DummyValiables.create') }}" class="btn btn-primary mb-2">{{ __('message.create') }}</a>
+	<a href="{{ route('DummyValiables.create') }}" class="btn btn-primary mb-2">{{ __('message.crud.create') }}</a>
 	@if ($DummyValiables->isNotEmpty())
 	<table class="table table-striped">
 		<thead>
@@ -22,10 +22,10 @@
 				DummyTableBody
 				<td>
 					<form action="{{ route('DummyValiables.destroy', $DummyValiable->id) }}" method="post">
-						<a href="{{ route('DummyValiables.show', $DummyValiable->id) }}" class="btn btn-primary">{{ __('message.show') }}</a>
+						<a href="{{ route('DummyValiables.show', $DummyValiable->id) }}" class="btn btn-primary">{{ __('message.crud.show') }}</a>
 						{{ method_field('DELETE') }}
 						{{ csrf_field() }}
-						<button type="submit" class="btn btn-danger btn-confirm">{{ __('message.delete') }}</button>
+						<button type="submit" class="btn btn-danger btn-confirm">{{ __('message.crud.delete') }}</button>
 					</form>
 				</td>
 			</tr>
