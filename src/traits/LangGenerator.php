@@ -1,32 +1,37 @@
 <?php
 namespace IchikawaYoshihiro\ReverseScaffoldGenerator\Traits;
 
+use Zend\Code\Generator\ValueGenerator;
+
 trait LangGenerator {
   public function generateLang()
   {
-      $langs = [
-          'crud' => [
-              'save' => 'Save',
-              'create' => 'Create',
-              'show' => 'Show',
-              'edit' => 'Edit',
-              'delete' => 'Delete',
-              'confirm' => 'Are you sure?',
-              'created' => 'Created',
-              'updated' => 'Updated',
-              'deleted' => 'Deleted',
-              'required' => 'Required',
-          ],
-          $this->valiable_name => $this->buildLangColumn(),
-      ];
-      $path = resource_path('lang/en/message.php');
+    $langs = [
+      'crud' => [
+        'save' => 'Save',
+        'create' => 'Create',
+        'show' => 'Show',
+        'edit' => 'Edit',
+        'delete' => 'Delete',
+        'confirm' => 'Are you sure?',
+        'created' => 'Created',
+        'updated' => 'Updated',
+        'deleted' => 'Deleted',
+        'required' => 'Required',
+      ],
+      $this->valiable_name => $this->buildLangColumn(),
+    ];
+    $path = resource_path('lang/en/message.php');
 
-      $replaces = [
-          'DummyLangs' => var_export($this->mergeLang($path, $langs), true),
-      ];
-      $stub = static::getStubFile('message.stub');
+    $generator = new ValueGenerator($this->mergeLang($path, $langs), ValueGenerator::TYPE_ARRAY_SHORT);
+    $generator->setIndentation("\t");
 
-      $this->fileGenerate($stub, $replaces, $path);
+    $replaces = [
+        'DummyLangs' => $generator->generate(),
+    ];
+    $stub = static::getStubFile('message.stub');
+
+    $this->fileGenerate($stub, $replaces, $path);
   }
 
 
