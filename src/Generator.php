@@ -12,6 +12,7 @@ class Generator
     use Traits\ModelGenerator;
     use Traits\ControllerGenerator;
     use Traits\ViewGenerator;
+    use Traits\LangGenerator;
 
     /**
      * @var Illuminate\Database\Eloquent\Collection
@@ -45,61 +46,6 @@ class Generator
     }
 
 
-
-    public function generateLang()
-    {
-        $langs = [
-            'crud' => [
-                'save' => 'Save',
-                'create' => 'Create',
-                'show' => 'Show',
-                'edit' => 'Edit',
-                'delete' => 'Delete',
-                'confirm' => 'Are you sure?',
-                'created' => 'Created',
-                'updated' => 'Updated',
-                'deleted' => 'Deleted',
-                'required' => 'Required',
-            ],
-            $this->valiable_name => $this->buildLangColumn(),
-        ];
-        $path = resource_path('lang/en/message.php');
-
-        $replaces = [
-            'DummyLangs' => var_export($this->mergeLang($path, $langs), true),
-        ];
-        $stub = static::getStubFile('message.stub');
-
-        $this->fileGenerate($stub, $replaces, $path);
-    }
-
-    protected function buildLangColumn()
-    {
-        $name  = static::toTitle($this->valiable_name);
-        $names = static::toTitle($this->valiables_name);
-
-        $base = [
-            'id' => 'ID',
-            'action' => 'Action',
-            'create' => "Create new {$name}",
-            'show' => "Show {$name}",
-            'edit' => "Edit {$name}",
-            'list' => "List of {$names}",
-        ];
-
-        $columns = $this->fillableFields()->pluck('Field')->reduce(function($carry, $item) {
-            $carry[$item] = static::toTitle($item);
-            return $carry;
-        }, []);
-
-        return array_replace_recursive ($base, $columns);
-    }
-    protected static function toTitle($str)
-    {
-        return title_case(str_replace(['_', '-'], ' ', $str));
-    }
-
-
     protected static function mkdir($path)
     {
         if (!file_exists($path)) {
@@ -121,16 +67,6 @@ class Generator
         $file = file_get_contents($stub);
         $file = str_replace(array_keys($replaces), array_values($replaces), $file);
         return file_put_contents($path, $file, FILE_APPEND);
-    }
-
-    
-    protected static function mergeLang($path, $langs)
-    {
-        $current = [];
-        if (file_exists($path)) {
-            $current = require($path);
-        }
-        return array_replace_recursive  ($current, $langs);
     }
 
 
