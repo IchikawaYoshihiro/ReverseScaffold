@@ -2,7 +2,6 @@
 namespace IchikawaYoshihiro\ReverseScaffoldGenerator\Traits;
 
 trait LangGenerator {
-
   public function generateLang()
   {
       $langs = [
@@ -30,6 +29,7 @@ trait LangGenerator {
       $this->fileGenerate($stub, $replaces, $path);
   }
 
+
   protected function buildLangColumn()
   {
       $name  = static::toTitle($this->valiable_name);
@@ -51,6 +51,8 @@ trait LangGenerator {
 
       return array_replace_recursive ($base, $columns);
   }
+
+
   protected static function toTitle($str)
   {
       return title_case(str_replace(['_', '-'], ' ', $str));
