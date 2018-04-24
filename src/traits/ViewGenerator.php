@@ -38,24 +38,31 @@ trait ViewGenerator {
         $path = resource_path("views/{$dirname}/index.blade.php");
         static::fileGenerate($stub, $replaces, $path);
 
+        // create
         $stub = static::getStubFile('views/create.blade.stub');
         $path = resource_path("views/{$dirname}/create.blade.php");
         static::fileGenerate($stub, $replaces, $path);
 
+        // edit
         $stub = static::getStubFile('views/edit.blade.stub');
         $path = resource_path("views/{$dirname}/edit.blade.php");
         static::fileGenerate($stub, $replaces, $path);
 
+        // _form
         $stub = static::getStubFile('views/_form.blade.stub');
         $path = resource_path("views/{$dirname}/_form.blade.php");
         static::fileGenerate($stub, $replaces, $path);
 
+        // show
         $stub = static::getStubFile('views/show.blade.stub');
         $path = resource_path("views/{$dirname}/show.blade.php");
         static::fileGenerate($stub, $replaces, $path);
     }
 
-
+    /**
+     * <th>{{ __('message.foo.bar') }}</th>
+     * ...
+     */
     protected function generateTableHead()
     {
         return $this->fillableFields()->map(function($column) {
@@ -64,6 +71,10 @@ trait ViewGenerator {
     }
 
 
+    /**
+     * <td>{{ $foo->bar }}</td>
+     * ...
+     */
     protected function generateTableBody()
     {
         return $this->fillableFields()->map(function($column) {
@@ -72,6 +83,10 @@ trait ViewGenerator {
     }
 
 
+    /**
+     * <dt>{{ __('message.foo.bar') }}</dt><dd>{{ $foo->bar }}</dd>
+     * ...
+     */
     protected function generateList()
     {
         return $this->fillableFields()->map(function($column) {
@@ -80,6 +95,18 @@ trait ViewGenerator {
         })->implode("\n\t\t");
     }
 
+    /**
+     *  <div class="form-group">
+     *      <label for="bar"><span class="badge badge-danger">{{ __('message.required') }}</span> {{ __('message.foo.bar') }}</label>
+     *      <input type="text" name="bar" id="bar" class="form-control" value="{{ old('bar', $foo->bar ?? '') }}">
+     *      <div class="alert alert-danger">
+     *          <ul>
+     *              <li>error message</li>
+     *          </ul>
+     *      </div>
+     *  </div>
+     *  ...
+     */
     protected function generateInputArea()
     {
         return $this->fillableFields()->map(function($item) {

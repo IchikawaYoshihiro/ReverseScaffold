@@ -117,7 +117,7 @@ class Generator
     {
         return $this->columns
             ->filter(function($column) {
-                return !in_array($column->Field, static::blackListColumns(), true);
+                return !in_array($column->Field, static::autoFilledColumns(), true);
             });
     }
 
@@ -130,7 +130,7 @@ class Generator
      * not fillable columns
      * @return array
      */
-    protected static function blackListColumns()
+    protected static function autoFilledColumns()
     {
         return ['id', 'created_at', 'updated_at'];
     }
