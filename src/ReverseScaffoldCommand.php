@@ -1,6 +1,6 @@
 <?php
 
-namespace IchikawaYoshihiro\ReverseScaffoldGenerator;
+namespace Ichikawayac\ReverseScaffoldGenerator;
 
 use Illuminate\Console\Command;
 

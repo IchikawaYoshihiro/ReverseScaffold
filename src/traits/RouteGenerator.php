@@ -1,5 +1,5 @@
 <?php
-namespace IchikawaYoshihiro\ReverseScaffoldGenerator\Traits;
+namespace Ichikawayac\ReverseScaffoldGenerator\Traits;
 
 trait RouteGenerator {
 
