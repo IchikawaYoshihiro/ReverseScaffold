@@ -111,7 +111,7 @@ trait ViewGenerator {
     {
         return $this->fillableFields()->map(function($item) {
             $input = $this->buildInput($item);
-            $requiured = $item->Null === 'NO' ? "<span class=\"badge badge-danger\">{{ __('message.required') }}</span>" : '';
+            $requiured = $item->Null === 'NO' ? "<span class=\"badge badge-danger\">{{ __('message.crud.required') }}</span>" : '';
             return <<< EOM
 <div class="form-group">
     <label for="{$item->Field}">{$requiured} {{ __('message.{$this->valiable_name}.{$item->Field}') }}</label>

@@ -48,29 +48,55 @@ class Generator
 
     public function generateLang()
     {
-        $name = title_case($this->valiable_name);
-        $names = title_case($this->valiables_name);
         $langs = [
             'crud' => [
-                'save'    => 'Save',
-                'create'  => 'Create',
-                'show'    => 'Show',
-                'edit'    => 'Edit',
-                'delete'  => 'Delete',
+                'save' => 'Save',
+                'create' => 'Create',
+                'show' => 'Show',
+                'edit' => 'Edit',
+                'delete' => 'Delete',
                 'confirm' => 'Are you sure?',
                 'created' => 'Created',
                 'updated' => 'Updated',
                 'deleted' => 'Deleted',
+                'required' => 'Required',
             ],
-            $this->valiable_name => [
-                'id'     => 'ID',
-                'action' => 'Action',
-                'create' => "Create new {$name}",
-                'show'   => "Show {$name}",
-                'edit'   => "Edit {$name}",
-                'list'   => "List of {$name}",
-            ]
+            $this->valiable_name => $this->buildLangColumn(),
         ];
+        $path = resource_path('lang/en/message.php');
+
+        $replaces = [
+            'DummyLangs' => var_export($this->mergeLang($path, $langs), true),
+        ];
+        $stub = static::getStubFile('message.stub');
+
+        $this->fileGenerate($stub, $replaces, $path);
+    }
+
+    protected function buildLangColumn()
+    {
+        $name  = static::toTitle($this->valiable_name);
+        $names = static::toTitle($this->valiables_name);
+
+        $base = [
+            'id' => 'ID',
+            'action' => 'Action',
+            'create' => "Create new {$name}",
+            'show' => "Show {$name}",
+            'edit' => "Edit {$name}",
+            'list' => "List of {$names}",
+        ];
+
+        $columns = $this->fillableFields()->pluck('Field')->reduce(function($carry, $item) {
+            $carry[$item] = static::toTitle($item);
+            return $carry;
+        }, []);
+
+        return array_replace_recursive ($base, $columns);
+    }
+    protected static function toTitle($str)
+    {
+        return title_case(str_replace(['_', '-'], ' ', $str));
     }
 
 
@@ -96,6 +122,17 @@ class Generator
         $file = str_replace(array_keys($replaces), array_values($replaces), $file);
         return file_put_contents($path, $file, FILE_APPEND);
     }
+
+    
+    protected static function mergeLang($path, $langs)
+    {
+        $current = [];
+        if (file_exists($path)) {
+            $current = require($path);
+        }
+        return array_replace_recursive  ($current, $langs);
+    }
+
 
     protected static function getStubFile($path)
     {
