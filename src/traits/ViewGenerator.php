@@ -9,7 +9,7 @@ trait ViewGenerator {
     public function generateViews()
     {
         // make views/{modelname} dir
-        $dirname = str_plural($this->valiable_name);
+        $dirname = $this->viewDirPath();
         $path = resource_path("views/{$dirname}");
         static::mkdir($path);
 
@@ -30,34 +30,56 @@ trait ViewGenerator {
         
         // layouts
         $stub = static::getStubFile('views/layouts/app.blade.stub');
-        $path = resource_path("views/layouts/app.blade.php");
+        $path = $this->layoutFilePath();
         static::fileGenerate($stub, $replaces, $path);
         
         // index
         $stub = static::getStubFile('views/index.blade.stub');
-        $path = resource_path("views/{$dirname}/index.blade.php");
+        $path = $this->viewFilePath('index');
         static::fileGenerate($stub, $replaces, $path);
 
         // create
         $stub = static::getStubFile('views/create.blade.stub');
-        $path = resource_path("views/{$dirname}/create.blade.php");
+        $path = $this->viewFilePath('create');
         static::fileGenerate($stub, $replaces, $path);
 
         // edit
         $stub = static::getStubFile('views/edit.blade.stub');
-        $path = resource_path("views/{$dirname}/edit.blade.php");
+        $path = $this->viewFilePath('edit');
         static::fileGenerate($stub, $replaces, $path);
 
         // _form
         $stub = static::getStubFile('views/_form.blade.stub');
-        $path = resource_path("views/{$dirname}/_form.blade.php");
+        $path = $this->viewFilePath('_form');
         static::fileGenerate($stub, $replaces, $path);
 
         // show
         $stub = static::getStubFile('views/show.blade.stub');
-        $path = resource_path("views/{$dirname}/show.blade.php");
+        $path = $this->viewFilePath('show');
         static::fileGenerate($stub, $replaces, $path);
     }
+
+
+    public function viewFileExists()
+    {
+        return file_exists($this->viewFilePath('index'));
+    }
+
+    public function viewDirPath()
+    {
+        return str_plural($this->valiable_name);
+    }
+
+    public function viewFilePath($name)
+    {
+        return resource_path('views/'.$this->viewDirPath().'/'.$name.'.blade.php');
+    }
+
+    public function layoutFilePath()
+    {
+        return resource_path('views/layouts/app.blade.php');
+    }
+
 
     /**
      * <th>{{ __('message.foo.bar') }}</th>

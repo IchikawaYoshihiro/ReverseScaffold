@@ -8,11 +8,6 @@ trait RouteGenerator {
      */
     public function addRoute()
     {
-		if ($this->routeExists()) {
-			echo "Route exists. skipped.\n";
-			return;
-		}
-
 		$replaces = [
             'DummyController' => $this->ControllerName,
             'DummyValiables'  => $this->valiables_name,
@@ -24,7 +19,7 @@ trait RouteGenerator {
         static::fileAppend($stub, $replaces, $path);
 	}
 	
-	public function routeExists()
+	public function routeDefined()
 	{
         try {
             return !!route("$this->valiables_name.index");

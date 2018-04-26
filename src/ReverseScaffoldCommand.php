@@ -11,7 +11,7 @@ class ReverseScaffoldCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:reverse {name}';
+    protected $signature = 'make:reverse {name : Table or model name.} {--f|force : Force over write files.}';
 
     /**
      * The console command description.
@@ -38,22 +38,43 @@ class ReverseScaffoldCommand extends Command
     public function handle()
     {
         $table_name = $this->argument('name');
+        $overwrite = $this->option('force');
 
         $gen = new Generator($table_name);
 
-        echo "generate model...\n";
-        $gen->generateModel();
+        $this->info("Generate model {$gen->ModelName}...");
+        if ($overwrite || !$gen->modelFileExists()) {
+            $gen->generateModel();
+        } else {
+            $this->error('File exists skipped!');
+        }
 
-        echo "generate controller...\n";
-        $gen->generateController();
+        $this->info("Generate controller {$gen->ControllerName}...");
+        if ($overwrite || !$gen->controllerFileExists()) {
+            $gen->generateController();
+        } else {
+            $this->error('File exists skipped!');
+        }
 
-        echo "add route...\n";
-        $gen->addRoute();
+        $this->info('Add routes...');
+        if ($overwrite || !$gen->routeDefined()) {
+            $gen->addRoute();
+        } else {
+            $this->error('Route already defined skipped!');
+        }
 
-        echo "generate view files...\n";
-        $gen->generateViews();
+        $this->info("Generate {$gen->valiables_name} view files...");
+        if ($overwrite || !$gen->viewFileExists()) {
+            $gen->generateViews();
+        } else {
+            $this->error('File exists skipped!');
+        }
 
-        echo "generate lang file...\n";
-        $gen->generateLang();
+        $this->info('Generate lang file...');
+        if ($overwrite || !$gen->langFileExists()) {
+            $gen->generateLang();
+        } else {
+            $this->error('File exists skipped!');
+        }
     }
 }

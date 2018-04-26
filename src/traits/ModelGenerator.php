@@ -13,10 +13,18 @@ trait ModelGenerator {
             'DummyColumns' => $this->fillableFields()->pluck('Field')->implode("',\n\t\t'"),
         ];
 
-        $stub     = static::getStubFile('model.stub');
-        $filename = $this->ModelName.'.php';
-        $path     = app_path($filename);
+        $stub = static::getStubFile('model.stub');
 
-        $this->fileGenerate($stub, $replaces, $path);
+        $this->fileGenerate($stub, $replaces, $this->modelFilePath());
+    }
+
+    public function modelFileExists()
+    {
+        return file_exists($this->modelFilePath());
+    }
+
+    public function modelFilePath()
+    {
+        return app_path($this->ModelName.'.php');
     }
 }

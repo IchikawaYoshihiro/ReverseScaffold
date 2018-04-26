@@ -17,13 +17,20 @@ trait ControllerGenerator {
             'DummyValidator'  => $this->validator(),
         ];
 
-        $stub     = static::getStubFile('controller.stub');
-        $filename = $this->ControllerName.'.php';
-        $path     = app_path('Http/Controllers/'.$filename);
+        $stub = static::getStubFile('controller.stub');
 
-        static::fileGenerate($stub, $replaces, $path);
+        static::fileGenerate($stub, $replaces, $this->controllerFilePath());
     }
 
+    public function controllerFileExists()
+    {
+        return file_exists($this->controllerFilePath());
+    }
+
+    public function controllerFilePath()
+    {
+        return app_path('Http/Controllers/'.$this->ControllerName.'.php');
+    }
 
     protected function validator()
     {
