@@ -6,17 +6,17 @@ use Illuminate\Support\ServiceProvider;
 
 class CommandServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                ReverseScaffoldCommand::class,
-            ]);
-        }
-    }
+	/**
+	 * Bootstrap services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+		if ($this->app->runningInConsole()) {
+			$this->commands([
+				ReverseScaffoldCommand::class,
+			]);
+		}
+	}
 }
