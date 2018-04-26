@@ -3,13 +3,9 @@
 @section('content')
 <div class="container">
 	<h2>{{ __('message.DummyValiable.show') }}</h2>
-
 	<dl>
 		DummyList
 	</dl>
-
 	<a href="{{ route('DummyValiables.edit', $DummyValiable->id) }}" class="btn btn-primary">{{ __('message.crud.edit') }}</a>
-
 </div>
-
 @endsection

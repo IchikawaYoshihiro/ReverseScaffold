@@ -1,3 +1,2 @@
 {{ csrf_field() }}
 DummyInputArea
-

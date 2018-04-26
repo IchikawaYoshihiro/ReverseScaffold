@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
 	<h2>{{ __('message.DummyValiable.create') }}</h2>
-  <form action="{{ route('DummyValiables.store') }}" method="POST">
-    @include('DummyValiables._form')
-    <button type="submit" class="btn btn-primary">{{ __('message.crud.save') }}</button>
-  </form>
+	<form action="{{ route('DummyValiables.store') }}" method="POST">
+		@include('DummyValiables._form')
+		<button type="submit" class="btn btn-primary">{{ __('message.crud.save') }}</button>
+	</form>
 </div>
 @endsection
