@@ -1,29 +1,29 @@
 {
-	"name": "ichikawa-y-ac/reverse-scaffold-generator",
-	"description": "Laravel CRUD Reverse Scaffold Generator",
-	"authors": [
-		{
-			"name": "Ichikawa Yoshihiro",
-			"email": "ichikawa.y.ac@gmail.com"
-		}
-	],
-	"license": "MIT",
-	"require": {
-		"php": "^7.0",
-		"laravel/framework": "5.6.*",
-		"zendframework/zend-code": "^3.3"
-	},
-	"autoload": {
-		"files": [],
-		"psr-4": {
-			"Ichikawayac\\ReverseScaffoldGenerator\\": "src/"
-		}
-	},
-	"extra": {
-		"laravel": {
-			"providers": [
-				"Ichikawayac\\ReverseScaffoldGenerator\\CommandServiceProvider"
-			]
-		}
-	}
+    "name": "ichikawa-y-ac/reverse-scaffold-generator",
+    "description": "Laravel CRUD Reverse Scaffold Generator",
+    "authors": [
+        {
+            "name": "Ichikawa Yoshihiro",
+            "email": "ichikawa.y.ac@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.0",
+        "laravel/framework": "5.6.*",
+        "zendframework/zend-code": "^3.3"
+    },
+    "autoload": {
+        "files": [],
+        "psr-4": {
+            "Ichikawayac\\ReverseScaffoldGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ichikawayac\\ReverseScaffoldGenerator\\CommandServiceProvider"
+            ]
+        }
+    }
 }
