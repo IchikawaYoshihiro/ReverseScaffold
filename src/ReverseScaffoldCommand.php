@@ -3,6 +3,9 @@
 namespace Ichikawayac\ReverseScaffoldGenerator;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Ichikawayac\ReverseScaffoldGenerator\Exceptions\TableNotFoundException;
+use Ichikawayac\ReverseScaffoldGenerator\GeneratorFactory;
 
 class ReverseScaffoldCommand extends Command
 {
@@ -11,7 +14,7 @@ class ReverseScaffoldCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:reverse {name : Table or model name.} {--f|force : Force over write files.}';
+    protected $signature = 'make:reverse {name : The target table name.} {--f|force : Force over write files.}';
 
     /**
      * The console command description.
@@ -38,43 +41,83 @@ class ReverseScaffoldCommand extends Command
     public function handle()
     {
         $table_name = $this->argument('name');
-        $overwrite = $this->option('force');
+        $overwrite = $this->option('force', true);
 
-        $gen = new Generator($table_name);
+        $this->info("Target table is '{$table_name}'");
 
-        $this->info("Generate model {$gen->ModelName}...");
-        if ($overwrite || !$gen->modelFileExists()) {
-            $gen->generateModel();
-        } else {
-            $this->error('File exists skipped!');
+        try {
+            $columns = static::fetchColumns($table_name);
+        } catch(TableNotFoundException $e) {
+            $this->error($e->getMessage());
+            exit();
         }
 
-        $this->info("Generate controller {$gen->ControllerName}...");
-        if ($overwrite || !$gen->controllerFileExists()) {
-            $gen->generateController();
-        } else {
-            $this->error('File exists skipped!');
-        }
+        $pb = new PathBuilder($table_name);
 
-        $this->info('Add routes...');
-        if ($overwrite || !$gen->routeDefined()) {
-            $gen->addRoute();
-        } else {
-            $this->error('Route already defined skipped!');
-        }
+        // model name
+        $pb->setModelPath($this->ask('input the Model name', 'Models\\'.$pb->getModelName()));
 
-        $this->info("Generate {$gen->valiables_name} view files...");
-        if ($overwrite || !$gen->viewFileExists()) {
-            $gen->generateViews();
-        } else {
-            $this->error('File exists skipped!');
-        }
+        // controller name
+        $pb->setControllerPath($this->ask('input the Controller name', 'Admin\\'.$pb->getControllerName()));
 
-        $this->info('Generate lang file...');
-        if ($overwrite || !$gen->langFileExists()) {
-            $gen->generateLang();
+        // view dir name
+        $pb->setViewPath($this->ask('input the View dirctory name', 'admin/'.$pb->getViewName()));
+
+        // route name
+        $pb->setRoutePath($this->ask('input the Route name', 'admin/'.$pb->getRouteName()));
+
+        // route name
+        $pb->setLangPath($this->ask('input the Lang name', 'admin/'.$pb->getLangName()));
+
+        $factory = new GeneratorFactory($columns, $pb);
+
+        foreach(GeneratorFactory::geteratorList() as $generator_name) {
+            $gen = $factory->create($generator_name);
+
+            if ($overwrite || !$gen->exists() || $this->confirm($gen->confirmMessgae())) {
+                $gen->generate();
+                $this->info($gen->generatedMessage());
+            } else {
+                $this->error($gen->skippedMessage());
+            }
+        }
+    }
+
+    /**
+     * check the table name exists
+     * @return bool exists
+     */
+    private static function existsTable($name)
+    {
+        return in_array($name, static::fetchTables(), true);
+    }
+
+
+    /**
+     * fetch table name list
+     * @return array table name list
+     */
+    private static function fetchTables()
+    {
+        $tables = DB::select('show tables');
+
+        return array_map(function($table) {
+            $tmp = (array)$table;
+            return array_shift($tmp);
+        }, $tables);
+    }
+
+    /**
+     * fetch column field information
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    protected function fetchColumns($name)
+    {
+        if (static::existsTable($name)) {
+            $columns = DB::select('show columns from '.$name);
+            return collect($columns);
         } else {
-            $this->error('File exists skipped!');
+            throw new TableNotFoundException;
         }
     }
 }

@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('DummyViewName.layout')
 
 @section('content')
 <div class="container">
-	<h2>{{ __('message.DummyValiable.create') }}</h2>
-	<form action="{{ route('DummyValiables.store') }}" method="POST">
-		@include('DummyValiables._form')
-		<button type="submit" class="btn btn-primary">{{ __('message.crud.save') }}</button>
+	<h2>{{ __('DummyLangName/message.crud.create') }}</h2>
+	<form action="{{ route('DummyRouteName.store') }}" method="POST">
+		@include('DummyViewName._form')
+		<button type="submit" class="btn btn-primary">{{ __('DummyLangName/message.crud.save') }}</button>
 	</form>
 </div>
 @endsection

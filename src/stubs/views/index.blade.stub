@@ -1,18 +1,18 @@
-@extends('layouts.app')
+@extends('DummyViewName.layout')
 
 @section('content')
 
 <div class="container">
-	<h2>{{ __('message.DummyValiable.list') }}</h2>
+	<h2>{{ __('DummyLangName/message.crud.items') }}</h2>
 
-	<a href="{{ route('DummyValiables.create') }}" class="btn btn-primary mb-2">{{ __('message.crud.create') }}</a>
+	<a href="{{ route('DummyRouteName.create') }}" class="btn btn-primary mb-2">{{ __('DummyLangName/message.crud.create') }}</a>
 	@if ($DummyValiables->isNotEmpty())
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>{{ __('message.DummyValiable.id') }}</th>
+				<th>{{ __('DummyLangName/message.DummyValiable.id') }}</th>
 				DummyTableHead
-				<th>{{ __('message.DummyValiable.action') }}</th>
+				<th>{{ __('DummyLangName/message.DummyValiable.action') }}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,11 +21,11 @@
 				<td>{{ $DummyValiable->id }}</td>
 				DummyTableBody
 				<td>
-					<form action="{{ route('DummyValiables.destroy', $DummyValiable->id) }}" method="post">
-						<a href="{{ route('DummyValiables.show', $DummyValiable->id) }}" class="btn btn-primary">{{ __('message.crud.show') }}</a>
+					<form action="{{ route('DummyRouteName.destroy', $DummyValiable->id) }}" method="post">
+						<a href="{{ route('DummyRouteName.show', $DummyValiable->id) }}" class="btn btn-primary">{{ __('DummyLangName/message.crud.show') }}</a>
 						{{ method_field('DELETE') }}
 						{{ csrf_field() }}
-						<button type="submit" class="btn btn-danger btn-confirm">{{ __('message.crud.delete') }}</button>
+						<button type="submit" class="btn btn-danger btn-confirm">{{ __('DummyLangName/message.crud.delete') }}</button>
 					</form>
 				</td>
 			</tr>
@@ -33,7 +33,7 @@
 		</tbody>
 	</table>
 	@else
-		<p>No DummyModel.</p>
+		<p>{{ __('DummyLangName/message.crud.no_item') }}.</p>
 	@endif
 </div>
 @endsection

@@ -1,12 +1,17 @@
 <?php
 
-namespace App;
+namespace DummyNameSpace;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DummyModel extends Model
+class DummyName extends Model
 {
 	protected $fillable = [
 		'DummyColumns'
+	];
+
+
+	protected $casts = [
+		DummyCasts
 	];
 }

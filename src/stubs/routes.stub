@@ -1,3 +1,5 @@
 
 // add by reverse scaffold generator.
-Route::resource('DummyValiables', 'DummyController');
+Route::name('DummyRoutePrefix')->group(function () {
+    Route::resource('DummyRouteName', 'DummyControllerFullName');
+});

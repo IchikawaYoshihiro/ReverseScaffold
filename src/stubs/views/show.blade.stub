@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('DummyViewName.layout')
 
 @section('content')
 <div class="container">
-	<h2>{{ __('message.DummyValiable.show') }}</h2>
+	<h2>{{ __('DummyLangName/message.crud.show') }}</h2>
 	<dl>
 		DummyList
 	</dl>
-	<a href="{{ route('DummyValiables.edit', $DummyValiable->id) }}" class="btn btn-primary">{{ __('message.crud.edit') }}</a>
+	<a href="{{ route('DummyRouteName.edit', $DummyValiable->id) }}" class="btn btn-primary">{{ __('DummyLangName/message.crud.edit') }}</a>
 </div>
 @endsection

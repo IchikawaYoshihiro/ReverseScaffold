@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace DummyControllerNamespace;
 
 use Illuminate\Http\Request;
-use App\DummyModel;
+use DummyModelFullName;
+use App\Http\Controllers\Controller;
 
 class DummyController extends Controller
 {
@@ -15,7 +16,7 @@ class DummyController extends Controller
 	public function index()
 	{
 		$DummyValiables = DummyModel::all();
-		return view('DummyValiables/index', compact('DummyValiables'));
+		return view('DummyViewName/index', compact('DummyValiables'));
 	}
 
 	/**
@@ -25,7 +26,7 @@ class DummyController extends Controller
 	 */
 	public function create()
 	{
-		return view('DummyValiables/create');
+		return view('DummyViewName/create');
 	}
 
 	/**
@@ -40,13 +41,13 @@ class DummyController extends Controller
 			DummyValidator
 		]);
 
-		DummyModel::create($request->only([
+		$DummyValiable = DummyModel::create($request->only([
 			'DummyColumns'
 		]));
 
-		session()->flash('success', __('message.crud.created'));
+		session()->flash('success', __('DummyLangName/message.crud.created', ['id' => $DummyValiable->id]));
 
-		return redirect()->route('DummyValiables.index');
+		return redirect()->route('DummyRouteName.index');
 	}
 
 	/**
@@ -58,7 +59,7 @@ class DummyController extends Controller
 	public function show($id)
 	{
 		$DummyValiable = DummyModel::findOrFail($id);
-		return view('DummyValiables/show', compact('DummyValiable'));
+		return view('DummyViewName/show', compact('DummyValiable'));
 	}
 
 	/**
@@ -70,7 +71,7 @@ class DummyController extends Controller
 	public function edit($id)
 	{
 		$DummyValiable = DummyModel::findOrFail($id);
-		return view('DummyValiables/edit', compact('DummyValiable'));
+		return view('DummyViewName/edit', compact('DummyValiable'));
 	}
 
 	/**
@@ -90,10 +91,10 @@ class DummyController extends Controller
 		$DummyValiable->fill($request->only([
 			'DummyColumns'
 		]))->save();
-		session()->flash('success', __('message.crud.updated'));
+		session()->flash('success', __('DummyLangName/message.crud.updated', ['id' => $DummyValiable->id]));
 
 
-		return redirect()->route('DummyValiables.index');
+		return redirect()->route('DummyRouteName.index');
 	}
 
 	/**
@@ -107,8 +108,8 @@ class DummyController extends Controller
 		$DummyValiable = DummyModel::findOrFail($id);
 		$DummyValiable->delete();
 
-		session()->flash('success', __('message.crud.deleted'));
+		session()->flash('success', __('DummyLangName/message.crud.deleted', ['id' => $DummyValiable->id]));
 
-		return redirect()->route('DummyValiables.index');
+		return redirect()->route('DummyRouteName.index');
 	}
 }
