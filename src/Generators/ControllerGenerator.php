@@ -45,7 +45,7 @@ class ControllerGenerator extends BaseGenerator
         $rules = [];
 
         // not null?
-        if ($item->Null === 'NO') {
+        if (static::is($item->Null, 'NO')) {
             $rules[] = 'required';
         } else {
             $rules[] = 'nullable';
