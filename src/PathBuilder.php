@@ -181,6 +181,11 @@ class PathBuilder
     {
         $this->lang_pathes = static::explode($path);
     }
+    public function __(...$names)
+    {
+        $name = implode('.', $names);
+        return "__('{$this->getLangFullName()}/message.{$name}')";
+    }
 
 
     private static function explode($str)

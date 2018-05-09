@@ -28,6 +28,9 @@ class LangGenerator extends BaseGenerator
                 'updated' => "{$this->name} #:id Updated",
                 'deleted' => "{$this->name} #:id Deleted",
 
+                'checked'     => "Checked",
+                'not_checked' => "Not checked",
+
                 'back'     => "Back",
                 'confirm'  => 'Are you sure?',
                 'required' => 'Required',

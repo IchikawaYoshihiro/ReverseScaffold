@@ -34,7 +34,7 @@ class ViewBaseGenerator extends BaseGenerator
     protected function buildTableHead()
     {
         return $this->getFillableFields()->map(function($column) {
-            return "<th>{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$column->Field}') }}</th>";
+            return "<th>{{ {$this->__($this->valiable_name, $column->Field)} }}</th>";
         })->implode("\n                ");
     }
 
@@ -46,6 +46,10 @@ class ViewBaseGenerator extends BaseGenerator
             if(static::has($column->Field, 'password')) {
                 return "<td>******</td>";
             }
+            if(static::isBoolean($column)) {
+                return "<td>{{ \${$this->valiable_name}->{$column->Field} ? {$this->__('crud', 'checked')} : {$this->__('crud', 'not_checked')} }}</td>";
+            }
+
             return "<td>{{ \${$this->valiable_name}->{$column->Field} }}</td>";
         })->implode("\n                ");
     }
@@ -54,10 +58,13 @@ class ViewBaseGenerator extends BaseGenerator
     protected function buildDefinitionList()
     {
         return $this->getFillableFields()->map(function($column) {
-            $dt = "        <dt>{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$column->Field}') }}</dt>\n";
+            $dt = "        <dt>{{ {$this->__($this->valiable_name, $column->Field)} }}</dt>\n";
             // hide password
             if(static::has($column->Field, 'password')) {
                 return $dt."        <dd>******</dd>";
+            }
+            if(static::isBoolean($column)) {
+                return $dt."        <dd>{{ \${$this->valiable_name}->{$column->Field} ? {$this->__('crud', 'checked')} : {$this->__('crud', 'not_checked')} }}</dd>";
             }
 
             return $dt."        <dd>{{ \${$this->valiable_name}->{$column->Field} }}</dd>";
@@ -84,9 +91,11 @@ EOM;
     {
         return <<<EOM
     @if (\$errors->has('{$item->Field}'))
-        @foreach (\$errors->get('{$item->Field}') as \$error)
-            <p class="text-danger">{{ \$error }}</p>
-        @endforeach
+        <div class="alert alert-danger">
+            @foreach (\$errors->get('{$item->Field}') as \$error)
+                <div>{{ \$error }}</div>
+            @endforeach
+        </div>
     @endif
 EOM;
 }
@@ -95,8 +104,8 @@ EOM;
     protected function buildRequired($item)
     {
         return $item->Null === 'NO'
-            ? "<span class=\"badge badge-danger\">{{ __('{$this->getLangFullName()}/message.crud.required') }}</span>"
-            : "<span class=\"badge badge-info\">{{ __('{$this->getLangFullName()}/message.crud.optional') }}</span>";
+            ? "<span class=\"badge badge-danger\">{{ {$this->__('crud', 'required')} }}</span>"
+            : "<span class=\"badge badge-info\">{{ {$this->__('crud', 'optional')} }}</span>";
     }
 
 
@@ -107,7 +116,7 @@ EOM;
         // textarea
         if (static::has($item->Type, 'text')) {
             return <<< EOM
-    <label for="{$item->Field}">{$requiured} {{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$item->Field}') }}</label>
+    <label for="{$item->Field}">{$requiured} {{ {$this->__($this->valiable_name, $item->Field)} }}</label>
     <textarea name="{$item->Field}" id="{$item->Field}" class="form-control">{{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? '') }}</textarea>
 EOM;
         }
@@ -118,14 +127,14 @@ EOM;
     {$requiured}
     <div class="custom-control custom-checkbox">
         <input type="checkbox" name="{$item->Field}" id="{$item->Field}" class="custom-control-input" value="1" {{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? false) ? 'checked' : ''}}>
-        <label for="{$item->Field}" class="custom-control-label">{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$item->Field}') }}</label>
+        <label for="{$item->Field}" class="custom-control-label">{{ {$this->__($this->valiable_name, $item->Field)} }}</label>
     </div>
 EOM;
         }
 
         // input type=text|password|email|number|date|time|datetime-local
         return <<< EOM
-    <label for="{$item->Field}">{$requiured} {{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$item->Field}') }}</label>
+    <label for="{$item->Field}">{$requiured} {{ {$this->__($this->valiable_name, $item->Field)} }}</label>
     <input type="{$this->judgeType($item)}" name="{$item->Field}" id="{$item->Field}" class="form-control" value="{$this->judgeValue($item)}">
 EOM;
     }
