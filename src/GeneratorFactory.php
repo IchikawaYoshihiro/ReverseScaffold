@@ -23,12 +23,14 @@ class GeneratorFactory
         $this->path_builder = $path_builder;
     }
 
-    public function create($class_name)
+    public function generators()
     {
-        return new $class_name($this->columns, $this->path_builder);
+        foreach(static::geteratorList() as $generator) {
+            yield new $generator($this->columns, $this->path_builder);
+        }
     }
 
-    public static function geteratorList()
+    protected static function geteratorList()
     {
         return [
             ModelGenerator::class,
@@ -39,8 +41,10 @@ class GeneratorFactory
             ViewShowGenerator::class,
             ViewFormGenerator::class,
             ViewLayoutGenerator::class,
-            RouteGenerator::class,
             LangGenerator::class,
+            RouteGenerator::class,
         ];
     }
+
+
 }

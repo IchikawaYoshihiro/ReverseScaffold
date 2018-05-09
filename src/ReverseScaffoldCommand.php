@@ -75,14 +75,12 @@ class ReverseScaffoldCommand extends Command
 
         $factory = new GeneratorFactory($columns, $pb);
 
-        foreach(GeneratorFactory::geteratorList() as $generator_name) {
-            $gen = $factory->create($generator_name);
-
-            if ($overwrite || !$gen->exists() || $this->confirm($gen->overwriteMessgae())) {
-                $gen->generate();
-                $this->info($gen->generatedMessage());
+        foreach($factory->generators() as $generator) {
+            if ($overwrite || !$generator->exists() || $this->confirm($generator->overwriteMessgae())) {
+                $generator->generate();
+                $this->info($generator->generatedMessage());
             } else {
-                $this->error($gen->skippedMessage());
+                $this->error($generator->skippedMessage());
             }
         }
     }
