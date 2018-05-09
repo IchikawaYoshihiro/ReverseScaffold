@@ -1,12 +1,11 @@
 {
     "name": "ichikawa-y-ac/reverse-scaffold-generator",
     "description": "Laravel CRUD Reverse Scaffold Generator",
-    "authors": [
-        {
-            "name": "Ichikawa Yoshihiro",
-            "email": "ichikawa.y.ac@gmail.com"
-        }
-    ],
+    "keywords": ["laravel", "scaffold", "generator", "crud", "bootstrap", "reverse-scaffold-generator"],
+    "authors": [{
+        "name": "Ichikawa Yoshihiro",
+        "email": "ichikawa.y.ac@gmail.com"
+    }],
     "license": "MIT",
     "require": {
         "php": "^7.0",
