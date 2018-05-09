@@ -52,6 +52,8 @@ class ReverseScaffoldCommand extends Command
             exit();
         }
 
+
+
         $pb = new PathBuilder($table_name);
 
         // model name
@@ -69,12 +71,14 @@ class ReverseScaffoldCommand extends Command
         // route name
         $pb->setLangPath($this->ask('input the Lang name', $pb->getLangName()));
 
+
+
         $factory = new GeneratorFactory($columns, $pb);
 
         foreach(GeneratorFactory::geteratorList() as $generator_name) {
             $gen = $factory->create($generator_name);
 
-            if ($overwrite || !$gen->exists() || $this->confirm($gen->confirmMessgae())) {
+            if ($overwrite || !$gen->exists() || $this->confirm($gen->overwriteMessgae())) {
                 $gen->generate();
                 $this->info($gen->generatedMessage());
             } else {

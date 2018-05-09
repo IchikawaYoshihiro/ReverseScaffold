@@ -37,7 +37,7 @@ abstract class BaseGenerator
      * confirm message for file overwrite.
      * @return string
      */
-    public function confirmMessgae()
+    public function overwriteMessgae()
     {
         return $this->getGenerateFilePath().' is exists. Do you overwrite it?';
     }

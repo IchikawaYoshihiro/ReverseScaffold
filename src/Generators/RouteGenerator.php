@@ -44,7 +44,7 @@ class RouteGenerator extends BaseGenerator
         }
     }
 
-    public function confirmMessgae()
+    public function overwriteMessgae()
     {
         return $this->getRouteFullName('.').' is defined. Do you add route?';
     }
