@@ -1,6 +1,7 @@
 {
     "name": "ichikawa-y-ac/reverse-scaffold-generator",
     "description": "Laravel CRUD Reverse Scaffold Generator",
+    "type": "Library",
     "keywords": ["laravel", "scaffold", "generator", "crud", "bootstrap", "reverse-scaffold-generator"],
     "authors": [{
         "name": "Ichikawa Yoshihiro",
