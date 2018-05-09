@@ -32,17 +32,15 @@ Target table is 'users'
 
 [generated] App\User.php
 [generated] App\Http\Controllers\UserController.php
-[generated] resources\views/user/index.blade.php
-[generated] resources\views/user/create.blade.php
-[generated] resources\views/user/edit.blade.php
-[generated] resources\views/user/show.blade.php
-[generated] resources\views/user/_form.blade.php
-[generated] resources\views/user/layout.blade.php
-[modified] routes/web.php
-[generated] resources\lang/en/user/message.php
+[generated] resources\views\user\index.blade.php
+[generated] resources\views\user\create.blade.php
+[generated] resources\views\user\edit.blade.php
+[generated] resources\views\user\show.blade.php
+[generated] resources\views\user\_form.blade.php
+[generated] resources\views\user\layout.blade.php
+[modified]  routes\web.php
+[generated] resources\lang\en\user\message.php
 ```
-
-
 
 ## Generated view
 ![sample image](https://user-images.githubusercontent.com/37093205/39172907-2e6c2418-47de-11e8-9263-ce5077f9b50b.png)
