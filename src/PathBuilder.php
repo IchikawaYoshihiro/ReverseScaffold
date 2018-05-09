@@ -38,6 +38,34 @@ class PathBuilder
         $this->lang_pathes = [$this->valiable_name];
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | real pathes
+    |--------------------------------------------------------------------------
+    */
+    public function getModelFilePath()
+    {
+        return static::fixPath(base_path($this->getModelFullName().'.php'));
+    }
+    public function getControllerFilePath()
+    {
+        return static::fixPath(base_path($this->getControllerFullName().'.php'));
+    }
+    public function getViewFilePath($name)
+    {
+        return static::fixPath(resource_path('views/'.$this->getViewFullName().'/'.$name.'.blade.php'));
+    }
+    public function getLangFilePath()
+    {
+        return static::fixPath(resource_path('lang/en/'.$this->getLangFullName().'/message.php'));
+    }
+    public function getRouteFilePath()
+    {
+        return static::fixPath(base_path('routes/web.php'));
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Model
@@ -90,6 +118,7 @@ class PathBuilder
     {
         return str_replace($base, '', $this->getControllerFullName());
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -157,5 +186,9 @@ class PathBuilder
     private static function explode($str)
     {
         return explode('/', str_replace(['.', '\\'], '/', $str));
+    }
+    private static function fixPath($str)
+    {
+        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $str);
     }
 }

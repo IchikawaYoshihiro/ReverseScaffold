@@ -120,10 +120,6 @@ abstract class BaseGenerator
             || static::begin($item->Field, 'can_')
             || static::begin($item->Field, 'should_');
     }
-    protected static function fixPath($str)
-    {
-        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $str);
-    }
 
 
     /**

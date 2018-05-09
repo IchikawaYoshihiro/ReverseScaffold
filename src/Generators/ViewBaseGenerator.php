@@ -27,7 +27,7 @@ class ViewBaseGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return static::fixPath(resource_path('views/'.$this->getViewFullName().'/'.$this->view_name.'.blade.php'));
+        return $this->getViewFilePath($this->view_name);
     }
 
 

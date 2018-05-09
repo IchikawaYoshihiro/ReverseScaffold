@@ -49,7 +49,7 @@ class LangGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return static::fixPath(resource_path('lang/en/'.$this->getLangFullName().'/message.php'));
+        return $this->getLangFilePath();
     }
 
 

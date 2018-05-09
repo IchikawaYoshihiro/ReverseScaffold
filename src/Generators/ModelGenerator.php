@@ -18,6 +18,6 @@ class ModelGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return static::fixPath(base_path($this->getModelFullName().'.php'));
+        return $this->getModelFilePath();
     }
 }

@@ -27,7 +27,7 @@ class ControllerGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return static::fixPath(base_path($this->getControllerFullName().'.php'));
+        return $this->getControllerFilePath();
     }
 
 

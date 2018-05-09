@@ -23,6 +23,10 @@ class GeneratorFactory
         $this->path_builder = $path_builder;
     }
 
+    /**
+     * "generator function" for generator
+     * @return Generator
+     */
     public function generators()
     {
         foreach(static::geteratorList() as $generator) {
@@ -30,6 +34,10 @@ class GeneratorFactory
         }
     }
 
+    /**
+     * list of generators
+     * @return array
+     */
     protected static function geteratorList()
     {
         return [
