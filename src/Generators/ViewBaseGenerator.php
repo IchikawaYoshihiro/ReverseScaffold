@@ -10,10 +10,10 @@ class ViewBaseGenerator extends BaseGenerator
         $replaces = [
             'DummyValiables' => $this->valiables_name,
             'DummyValiable'  => $this->valiable_name,
-            'DummyTableHead' => $this->generateTableHead(),
-            'DummyTableBody' => $this->generateTableBody(),
-            'DummyList'      => $this->generateList(),
-            'DummyInputArea' => $this->generateInputArea(),
+            'DummyTableHead' => $this->buildTableHead(),
+            'DummyTableBody' => $this->buildTableBody(),
+            'DummyList'      => $this->buildDefinitionList(),
+            'DummyInputArea' => $this->buildForm(),
             'DummyViewName'  => $this->getViewFullName('.'),
             'DummyRouteName' => $this->getRouteFullName('.'),
             'DummyLangName'  => $this->getLangFullName(),
@@ -27,27 +27,19 @@ class ViewBaseGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return resource_path('views/'.$this->getViewFullName().'/'.$this->view_name.'.blade.php');
+        return static::fixPath(resource_path('views/'.$this->getViewFullName().'/'.$this->view_name.'.blade.php'));
     }
 
 
-    /**
-     * <th>{{ __('lang_prefix.message.foo.bar') }}</th>
-     * ...
-     */
-    protected function generateTableHead()
+    protected function buildTableHead()
     {
         return $this->getFillableFields()->map(function($column) {
             return "<th>{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$column->Field}') }}</th>";
-        })->implode("\n\t\t\t");
+        })->implode("\n                ");
     }
 
 
-    /**
-     * <td>{{ $foo->bar }}</td>
-     * ...
-     */
-    protected function generateTableBody()
+    protected function buildTableBody()
     {
         return $this->getFillableFields()->map(function($column) {
             // hide password
@@ -55,83 +47,89 @@ class ViewBaseGenerator extends BaseGenerator
                 return "<td>******</td>";
             }
             return "<td>{{ \${$this->valiable_name}->{$column->Field} }}</td>";
-        })->implode("\n\t\t\t");
+        })->implode("\n                ");
     }
 
 
-    /**
-     * <dt>{{ __('lang_prefix.message.foo.bar') }}</dt><dd>{{ $foo->bar }}</dd>
-     * ...
-     */
-    protected function generateList()
+    protected function buildDefinitionList()
     {
         return $this->getFillableFields()->map(function($column) {
+            $dt = "        <dt>{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$column->Field}') }}</dt>\n";
             // hide password
             if(static::has($column->Field, 'password')) {
-                return "<dt>{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$column->Field}') }}</dt>"
-                    ."<dd>******</dd>";
+                return $dt."        <dd>******</dd>";
             }
 
-            return "<dt>{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$column->Field}') }}</dt>"
-                ."<dd>{{ \${$this->valiable_name}->{$column->Field} }}</dd>";
-        })->implode("\n\t\t");
+            return $dt."        <dd>{{ \${$this->valiable_name}->{$column->Field} }}</dd>";
+        })->implode("\n");
     }
 
-    /**
-     *  <div class="form-group">
-     *      <label for="bar"><span class="badge badge-danger">{{ __('lang_prefix.message.required') }}</span> {{ __('lang_prefix.message.foo.bar') }}</label>
-     *      <input type="text" name="bar" id="bar" class="form-control" value="{{ old('bar', $foo->bar ?? '') }}">
-     *      <div class="alert alert-danger">
-     *          <ul>
-     *              <li>error message</li>
-     *          </ul>
-     *      </div>
-     *  </div>
-     *  ...
-     */
-    protected function generateInputArea()
+
+    protected function buildForm()
     {
         return $this->getFillableFields()->map(function($item) {
             $input = $this->buildInput($item);
-            $requiured = $item->Null === 'NO'
-                ? "<span class=\"badge badge-danger\">{{ __('{$this->getLangFullName()}/message.crud.required') }}</span>"
-                : "<span class=\"badge badge-info\">{{ __('{$this->getLangFullName()}/message.crud.optional') }}</span>";
+            $error = $this->buildError($item);
             return <<< EOM
 <div class="form-group">
-    <label for="{$item->Field}">{$requiured} {{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$item->Field}') }}</label>
-    {$input}
-    @if (\$errors->has('{$item->Field}'))
-        <div class="alert alert-danger">
-            <ul>
-                @foreach (\$errors->get('{$item->Field}') as \$error)
-                    <li>{{ \$error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+{$input}
+{$error}
 </div>
 EOM;
         })->implode("\n\n");
     }
 
 
+    protected function buildError($item)
+    {
+        return <<<EOM
+    @if (\$errors->has('{$item->Field}'))
+        @foreach (\$errors->get('{$item->Field}') as \$error)
+            <p class="text-danger">{{ \$error }}</p>
+        @endforeach
+    @endif
+EOM;
+}
+
+
+    protected function buildRequired($item)
+    {
+        return $item->Null === 'NO'
+            ? "<span class=\"badge badge-danger\">{{ __('{$this->getLangFullName()}/message.crud.required') }}</span>"
+            : "<span class=\"badge badge-info\">{{ __('{$this->getLangFullName()}/message.crud.optional') }}</span>";
+    }
+
+
     protected function buildInput($item)
     {
+        $requiured = $this->buildRequired($item);
+
+        // textarea
         if (static::has($item->Type, 'text')) {
             return <<< EOM
-<textarea name="{$item->Field}" id="{$item->Field}" class="form-control">{{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? '') }}</textarea>
-EOM;
-        }
-        if (static::isBoolean($item)) {
-            return <<< EOM
-<input type="checkbox" name="{$item->Field}" id="{$item->Field}" class="" {{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? false) ? 'checked' : ''}}>
+    <label for="{$item->Field}">{$requiured} {{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$item->Field}') }}</label>
+    <textarea name="{$item->Field}" id="{$item->Field}" class="form-control">{{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? '') }}</textarea>
 EOM;
         }
 
+        // checkbox
+        if (static::isBoolean($item)) {
+            return <<< EOM
+    {$requiured}
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" name="{$item->Field}" id="{$item->Field}" class="custom-control-input" value="1" {{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? false) ? 'checked' : ''}}>
+        <label for="{$item->Field}" class="custom-control-label">{{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$item->Field}') }}</label>
+    </div>
+EOM;
+        }
+
+        // input type=text|password|email|number|date|time|datetime-local
         return <<< EOM
-<input type="{$this->judgeType($item)}" name="{$item->Field}" id="{$item->Field}" class="form-control" value="{$this->judgeValue($item)}">
+    <label for="{$item->Field}">{$requiured} {{ __('{$this->getLangFullName()}/message.{$this->valiable_name}.{$item->Field}') }}</label>
+    <input type="{$this->judgeType($item)}" name="{$item->Field}" id="{$item->Field}" class="form-control" value="{$this->judgeValue($item)}">
 EOM;
     }
+
 
     protected function judgeType($item)
     {
@@ -139,16 +137,13 @@ EOM;
         if (static::has($item->Field, 'email')) {
             return 'email';
         }
-        if (static::isBoolean($item)) {
-            return 'checkbox';
+        if (static::has($item->Field, 'password')) {
+            return 'password';
         }
 
         // types
         if (static::has($item->Type, 'int')) {
             return 'number';
-        }
-        if (static::is($item->Type, 'datetime')) {
-            return 'datetime-local';
         }
         if (static::is($item->Type, 'time')) {
             return 'time';
@@ -159,18 +154,17 @@ EOM;
         return 'text';
     }
 
+
     protected function judgeValue($item)
     {
         // special
         if (static::has($item->Field, 'password')) {
             return '';
         }
-        if (static::isDateTime($item)) {
-            return "{{ old('{$item->Field}', optional(\${$this->valiable_name}->{$item->Field} ?? null)->format('Y-m-d\TH:i')) }}";
-        }
 
         return "{{ old('{$item->Field}', \${$this->valiable_name}->{$item->Field} ?? '') }}";
     }
+
 
     protected function judgeAttr($item)
     {

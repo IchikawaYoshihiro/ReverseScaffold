@@ -6,12 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DummyName extends Model
 {
-	protected $fillable = [
-		'DummyColumns'
-	];
-
-
-	protected $casts = [
-		DummyCasts
-	];
+    protected $fillable = [
+        'DummyColumns'
+    ];
 }

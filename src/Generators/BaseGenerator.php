@@ -24,7 +24,6 @@ abstract class BaseGenerator
      */
     abstract public function getGenerateFilePath();
 
-
     /**
      * Exists generate target files
      * @return bool
@@ -121,9 +120,9 @@ abstract class BaseGenerator
             || static::begin($item->Field, 'can_')
             || static::begin($item->Field, 'should_');
     }
-    protected static function isDateTime($item)
+    protected static function fixPath($str)
     {
-        return static::is($item->Type, 'datetime');
+        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $str);
     }
 
 

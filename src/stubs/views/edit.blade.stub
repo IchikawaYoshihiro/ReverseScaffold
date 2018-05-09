@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="container">
-	<h2>{{ __('DummyLangName/message.crud.edit') }}</h2>
-	<form action="{{ route('DummyRouteName.update', $DummyValiable->id) }}" method="POST">
-		{{ method_field('PUT') }}
-		@include('DummyViewName._form')
-		<button type="submit" class="btn btn-primary">{{ __('DummyLangName/message.crud.save') }}</button>
-	</form>
+    <h2>{{ __('DummyLangName/message.crud.edit') }}</h2>
+    <form action="{{ route('DummyRouteName.update', $DummyValiable->id) }}" method="POST">
+        {{ method_field('PUT') }}
+        @include('DummyViewName._form')
+    </form>
+    <p><a href="{{ route('DummyRouteName.show', $DummyValiable->id) }}" class="btn btn-secondary">{{ __('DummyLangName/message.crud.back') }}</a></p>
 </div>
 @endsection

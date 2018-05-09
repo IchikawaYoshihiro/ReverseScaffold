@@ -8,8 +8,7 @@ class ModelGenerator extends BaseGenerator
         $replaces = [
             'DummyNameSpace' => $this->getModelNamespace(),
             'DummyName'      => $this->getModelName(),
-            'DummyColumns'   => $this->getFillableFields()->pluck('Field')->implode("',\n\t\t'"),
-            'DummyCasts'     => $this->buildCasts(),
+            'DummyColumns'   => $this->getFillableFields()->pluck('Field')->implode("',\n        '"),
         ];
 
         $stub = static::getStubFile('model.stub');
@@ -19,28 +18,6 @@ class ModelGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return base_path($this->getModelFullName().'.php');
-    }
-
-    public function buildCasts()
-    {
-        return $this->getFillableFields()
-            ->filter(function($item) {
-                return static::isDateTime($item);
-            })
-            ->map(function($item) {
-                return "'{$item->Field}' => '{$this->judgeCastType($item)}'";
-            })
-            ->implode(",\n\t\t");
-    }
-
-    public function judgeCastType($item)
-    {
-        if (static::isDateTime($item)) {
-            return 'datetime';
-        }
-        if (static::isBoolean($item)) {
-            return 'boolean';
-        }
+        return static::fixPath(base_path($this->getModelFullName().'.php'));
     }
 }

@@ -3,37 +3,37 @@
 @section('content')
 
 <div class="container">
-	<h2>{{ __('DummyLangName/message.crud.items') }}</h2>
+    <h2>{{ __('DummyLangName/message.crud.items') }}</h2>
 
-	<a href="{{ route('DummyRouteName.create') }}" class="btn btn-primary mb-2">{{ __('DummyLangName/message.crud.create') }}</a>
-	@if ($DummyValiables->isNotEmpty())
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>{{ __('DummyLangName/message.DummyValiable.id') }}</th>
-				DummyTableHead
-				<th>{{ __('DummyLangName/message.DummyValiable.action') }}</th>
-			</tr>
-		</thead>
-		<tbody>
-	@foreach ($DummyValiables as $DummyValiable)
-			<tr>
-				<td>{{ $DummyValiable->id }}</td>
-				DummyTableBody
-				<td>
-					<form action="{{ route('DummyRouteName.destroy', $DummyValiable->id) }}" method="post">
-						<a href="{{ route('DummyRouteName.show', $DummyValiable->id) }}" class="btn btn-primary">{{ __('DummyLangName/message.crud.show') }}</a>
-						{{ method_field('DELETE') }}
-						{{ csrf_field() }}
-						<button type="submit" class="btn btn-danger btn-confirm">{{ __('DummyLangName/message.crud.delete') }}</button>
-					</form>
-				</td>
-			</tr>
-	@endforeach
-		</tbody>
-	</table>
-	@else
-		<p>{{ __('DummyLangName/message.crud.no_item') }}.</p>
-	@endif
+    <a href="{{ route('DummyRouteName.create') }}" class="btn btn-primary mb-2">{{ __('DummyLangName/message.crud.create') }}</a>
+    @if ($DummyValiables->isNotEmpty())
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ __('DummyLangName/message.DummyValiable.id') }}</th>
+                DummyTableHead
+                <th>{{ __('DummyLangName/message.DummyValiable.action') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach ($DummyValiables as $DummyValiable)
+            <tr>
+                <td>{{ $DummyValiable->id }}</td>
+                DummyTableBody
+                <td>
+                    <form action="{{ route('DummyRouteName.destroy', $DummyValiable->id) }}" method="post">
+                        <a href="{{ route('DummyRouteName.show', $DummyValiable->id) }}" class="btn btn-primary">{{ __('DummyLangName/message.crud.show') }}</a>
+                        {{ method_field('DELETE') }}
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-danger btn-confirm">{{ __('DummyLangName/message.crud.delete') }}</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+    @else
+        <p>{{ __('DummyLangName/message.crud.no_item') }}.</p>
+    @endif
 </div>
 @endsection

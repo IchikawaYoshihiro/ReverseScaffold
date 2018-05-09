@@ -55,19 +55,19 @@ class ReverseScaffoldCommand extends Command
         $pb = new PathBuilder($table_name);
 
         // model name
-        $pb->setModelPath($this->ask('input the Model name', 'Models\\'.$pb->getModelName()));
+        $pb->setModelPath($this->ask('input the Model name', $pb->getModelName()));
 
         // controller name
-        $pb->setControllerPath($this->ask('input the Controller name', 'Admin\\'.$pb->getControllerName()));
+        $pb->setControllerPath($this->ask('input the Controller name', $pb->getControllerName()));
 
         // view dir name
-        $pb->setViewPath($this->ask('input the View dirctory name', 'admin/'.$pb->getViewName()));
+        $pb->setViewPath($this->ask('input the View dirctory name', $pb->getViewName()));
 
         // route name
-        $pb->setRoutePath($this->ask('input the Route name', 'admin/'.$pb->getRouteName()));
+        $pb->setRoutePath($this->ask('input the Route name', $pb->getRouteName()));
 
         // route name
-        $pb->setLangPath($this->ask('input the Lang name', 'admin/'.$pb->getLangName()));
+        $pb->setLangPath($this->ask('input the Lang name', $pb->getLangName()));
 
         $factory = new GeneratorFactory($columns, $pb);
 

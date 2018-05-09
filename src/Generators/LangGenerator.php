@@ -28,7 +28,8 @@ class LangGenerator extends BaseGenerator
                 'updated' => "{$this->name} #:id Updated",
                 'deleted' => "{$this->name} #:id Deleted",
 
-                'confirm' => 'Are you sure?',
+                'back'     => "Back",
+                'confirm'  => 'Are you sure?',
                 'required' => 'Required',
                 'optional' => 'Optional',
             ],
@@ -36,7 +37,7 @@ class LangGenerator extends BaseGenerator
         ];
 
         $vg = new ValueGenerator($langs, ValueGenerator::TYPE_ARRAY_SHORT);
-        $vg->setIndentation("\t");
+        $vg->setIndentation("    ");
 
         $replaces = [
             'DummyLangs' => $vg->generate(),
@@ -48,7 +49,7 @@ class LangGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return resource_path('lang/en/'.$this->getLangFullName().'/message.php');
+        return static::fixPath(resource_path('lang/en/'.$this->getLangFullName().'/message.php'));
     }
 
 

@@ -16,7 +16,7 @@ class ControllerGenerator extends BaseGenerator
 
             'DummyValiables'  => $this->valiables_name,
             'DummyValiable'   => $this->valiable_name,
-            'DummyColumns'    => $this->getFillableFields()->pluck('Field')->implode("',\n\t\t\t'"),
+            'DummyColumns'    => $this->getFillableFields()->pluck('Field')->implode("',\n            '"),
             'DummyValidator'  => $this->buildValidator(),
         ];
 
@@ -27,7 +27,7 @@ class ControllerGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return base_path($this->getControllerFullName().'.php');
+        return static::fixPath(base_path($this->getControllerFullName().'.php'));
     }
 
 
@@ -36,7 +36,7 @@ class ControllerGenerator extends BaseGenerator
         return $this->getFillableFields()->map(function ($item) {
             $rule = static::buildRule($item);
             return "'{$item->Field}' => '{$rule}'";
-        })->implode(",\n\t\t\t");
+        })->implode(",\n            ");
     }
 
 
@@ -45,32 +45,37 @@ class ControllerGenerator extends BaseGenerator
         $rules = [];
 
         // not null?
-        if (static::is($item->Null, 'NO')) {
-            $rules[] = 'required';
-        } else {
+        if (static::is($item->Null, 'YES') || static::isBoolean($item)) {
             $rules[] = 'nullable';
+        } else {
+            $rules[] = 'required';
         }
 
         // types
-        if (static::has($item->Type, 'int')) {
-            $rules[] = 'numeric';
+        if (static::isBoolean($item)) {
+            $rules[] = 'boolean';
         }
-
-        if (static::has($item->Type, 'char') || static::has($item->Type, 'text')) {
-            $rules[] = 'string';
-
-            if (static::has($item->Type, '(')) {
-                $rules[] = static::buildLength($item->Type);
+        else {
+            if (static::has($item->Type, 'int')) {
+                $rules[] = 'numeric';
             }
-        }
 
-        if (static::has($item->Type, 'unsigned')) {
-            $rules[] = 'min:0';
-        }
+            if (static::has($item->Type, 'char') || static::has($item->Type, 'text')) {
+                $rules[] = 'string';
 
-        // special name
-        if (static::has($item->Field, 'email')) {
-            $rules[] = 'email';
+                if (static::has($item->Type, '(')) {
+                    $rules[] = static::buildLength($item->Type);
+                }
+            }
+
+            if (static::has($item->Type, 'unsigned')) {
+                $rules[] = 'min:0';
+            }
+
+            // special name
+            if (static::has($item->Field, 'email')) {
+                $rules[] = 'email';
+            }
         }
 
         return implode($rules, '|');

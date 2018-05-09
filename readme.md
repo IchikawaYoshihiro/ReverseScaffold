@@ -1,8 +1,8 @@
 # Laravel CRUD Reverse Scaffold Generator
 
 ## About
-Generates CRUD (Views, Controller, Model, Route and Lang files) from a database table.
-This generator inspired from the scala skinny framework.
+Laravel5.6用のCRUD (Views, Controller, Model, Route, Lang)をDBスキーマから生成するジェネレーターです。
+ViewはBootstrap4ベースで生成します。
 
 ## Installation
 `composer require ichikawa-y-ac/reverse-scaffold-generator`
@@ -11,20 +11,37 @@ This generator inspired from the scala skinny framework.
 `php artisan make:reverse tablename [-f|--force]`
 
 ## Example
-`php artisan make:reverse foo`
+```
+$php artisan make:reverse users
+Target table is 'users'
 
-Generator will generate or add contents bellow files.
+ input the Model name [User]:
+ >
+
+ input the Controller name [UserController]:
+ >
+
+ input the View dirctory name [user]:
+ >
+
+ input the Route name [user]:
+ >
+
+ input the Lang name [user]:
+ >
+
+[generated] App\User.php
+[generated] App\Http\Controllers\UserController.php
+[generated] resources\views/user/index.blade.php
+[generated] resources\views/user/create.blade.php
+[generated] resources\views/user/edit.blade.php
+[generated] resources\views/user/show.blade.php
+[generated] resources\views/user/_form.blade.php
+[generated] resources\views/user/layout.blade.php
+[modified] routes/web.php
+[generated] resources\lang/en/user/message.php
 ```
-/app/Foo.php
-/app/Http/FooController.php
-/resources/views/foos/index.blade.php
-/resources/views/foos/show.blade.php
-/resources/views/foos/create.blade.php
-/resources/views/foos/edit.blade.php
-/resources/views/foos/_form.blade.php
-/resources/lang/en/message.php
-/routes/web.php
-```
+
 
 
 ## Generated view

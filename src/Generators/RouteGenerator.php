@@ -28,7 +28,7 @@ class RouteGenerator extends BaseGenerator
 
     public function getGenerateFilePath()
     {
-        return base_path('routes/web.php');
+        return static::fixPath(base_path('routes/web.php'));
     }
 
     /**
@@ -51,6 +51,6 @@ class RouteGenerator extends BaseGenerator
 
     public function generatedMessage()
     {
-        return '[modified] '.$this->getGenerateFilePath();
+        return '[modified]  '.$this->getGenerateFilePath();
     }
 }
