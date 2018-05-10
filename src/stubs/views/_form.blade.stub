@@ -1,2 +1,6 @@
 {{ csrf_field() }}
 DummyInputArea
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">{{ __('DummyLangName/message.crud.save') }}</button>
+    </div>
